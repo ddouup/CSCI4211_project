@@ -26,6 +26,7 @@ def client(client_id, server_ip, server_port):
 
 			output = s.recv(1024).decode("utf-8")
 			print(output)
+			print()
 
 			if output == 'q':
 				print("Server closed exceptionally.")
