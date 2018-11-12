@@ -3,8 +3,6 @@ import sys
 from _thread import *
 
 def new_client(c, server_id, DNS_map):
-	print(DNS_map)
-
 	while True:
 		try:
 			output = c.recv(1024).decode("utf-8")
@@ -18,9 +16,10 @@ def new_client(c, server_id, DNS_map):
 			log_file.close()
 
 			try:
-				client_id = output.split(",")[0]
-				hostname = output.split(",")[1]
-				dns_type = output.split(",")[2]
+				client_id = output.split(", ")[0]
+				hostname = output.split(", ")[1]
+				dns_type = output.split(", ")[2]
+				
 				if dns_type != 'I' and dns_type != 'R':
 					raise e
 
@@ -30,6 +29,7 @@ def new_client(c, server_id, DNS_map):
 					c.send(('0xFF, '+client_id+', Host not found').encode("utf-8"))
 
 			except Exception as e:
+				print(e)
 				print("Invalid format")
 				c.send(('0xEE, '+client_id+', Invalid format').encode("utf-8"))
 
@@ -56,8 +56,8 @@ def local_server(server_id, server_port, mapping_files, servers_list):
 		domain = line.split(" ")[0]
 		ip = line.split(" ")[1]
 		DNS_map[domain] = ip
-
 	f.close()
+	print(DNS_map)
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 	host = '0.0.0.0'	#listen on this pc
