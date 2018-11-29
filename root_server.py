@@ -1,3 +1,12 @@
+'''
+Name of file: root_server.py
+Short description of program: 
+
+Name: DOU Daihui
+ID: 5514178
+Email: dou00005@umn.edu
+'''
+
 import socket
 import sys
 from _thread import *
@@ -5,13 +14,15 @@ from _thread import *
 def new_client(c, server_id, Servers_list):
 
     query = c.recv(1024).decode("utf-8")
+    print("Receive query:")
     print(query)
+    print()
 
     client_id = query.split(",")[0].strip()
     hostname = query.split(",")[1].strip()
     dns_type = query.split(",")[2].strip()
 
-    domain = hostname.split(".")[-1].strip()
+    domain = hostname.split(".")[-1].strip().lower()
 
     if dns_type == 'I':
         if Servers_list.__contains__(domain):
@@ -19,7 +30,7 @@ def new_client(c, server_id, Servers_list):
             c.send(respond.encode("utf-8"))
 
         else:
-            respond = '0xFF, '+client_id+', Server not found'
+            respond = '0xFF, '+server_id+', Server not found'
             c.send(respond.encode("utf-8"))
 
     elif dns_type == 'R':
@@ -35,6 +46,7 @@ def new_client(c, server_id, Servers_list):
         print(s.recv(1024).decode("utf-8"))
         print()
         print("Sending query: "+query)
+        print()
         s.send(query.encode("utf-8"))
 
         respond = s.recv(1024).decode("utf-8")
@@ -45,7 +57,8 @@ def new_client(c, server_id, Servers_list):
         
         c.send(respond.encode("utf-8"))
 
-
+    print("----------------------")
+    print()
     c.close()
 
 

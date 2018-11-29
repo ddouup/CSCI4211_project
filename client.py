@@ -1,5 +1,21 @@
+'''
+Name of file: client.py
+Short description of program: 
+
+Name: DOU Daihui
+ID: 5514178
+Email: dou00005@umn.edu
+'''
+
 import socket
 import sys
+
+def writetoLog(filename, line):
+    print("Write to: "+filename)
+    print(line)
+    print()
+    with open(filename, 'a+') as log_file:
+        log_file.write(line+'\n')
 
 def client(client_id, server_ip, server_port):
     s = socket.socket()
@@ -10,8 +26,7 @@ def client(client_id, server_ip, server_port):
 
     while True:
         try:
-            log_file = open(client_id+'.log','a+')
-
+            
             query = input('Please input the DNS query in the following format: CLIENT_ID, HOSTNAME, I/R\nInput q to exit\n:')
             if query == 'q':
                 s.send('q'.encode("utf-8"))
@@ -22,20 +37,20 @@ def client(client_id, server_ip, server_port):
                 print()
                 continue
 
-            log_file.write(query+'\n')
+            writetoLog(client_id+'.log', query)
+
             s.send(query.encode("utf-8"))
 
-            output = s.recv(1024).decode("utf-8")
-            print(output)
+            respond = s.recv(1024).decode("utf-8")
+            print(respond)
             print()
 
-            if output == 'q':
+            if respond == 'q':
                 print("Server closed exceptionally.")
                 s.close()
                 sys.exit(0)
 
-            log_file.write(output+'\n\n')
-            log_file.close()
+            writetoLog(client_id+'.log', respond+"\n")
 
         except KeyboardInterrupt:
             print()

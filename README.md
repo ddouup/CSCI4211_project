@@ -3,6 +3,7 @@
 * socket
 * _thread
 * sys
+* os
 
 ## Server
 Run:
