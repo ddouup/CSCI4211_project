@@ -1,6 +1,13 @@
 '''
 Name of file: root_server.py
-Short description of program: 
+
+
+Description:
+This program runs the root DNS server, which listens on '0.0.0.0' and port input by parameter.
+It receivis queries from local DNS server.
+If it's Iterative query, the root DNS server forward query to that top_level DNS server and send the response back to local DNS server.
+If it's Recursive query, the root DNS server forward send the IP and Port of the top_level DNS server back to local DNS server.
+
 
 Name: DOU Daihui
 ID: 5514178

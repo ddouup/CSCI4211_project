@@ -1,6 +1,12 @@
 '''
 Name of file: domain_server.py
-Short description of program: 
+
+
+Description:
+This program runs the top_level DNS server(org, gov, com), which listens on '0.0.0.0' and port input by parameter.
+When receiving a query from root or local DNS server, it returns the record or 'Host not found'.
+Run this program each time for one top_level DNS server.
+
 
 Name: DOU Daihui
 ID: 5514178

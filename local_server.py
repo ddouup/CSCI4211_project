@@ -1,6 +1,16 @@
 '''
 Name of file: local_server.py
-Short description of program: 
+
+
+Description:
+This program runs the local DNS server, which listens on '0.0.0.0' and port input by parameter.
+
+When receiving a query from client, it first checks if default.dat or cache contains record.
+If they do NOT contains such record, it forward the query to Root DNS server.
+
+If the message responded from Root starts with '0x01', which means Iterative query, the local DNS server continues to forward query to that top_level DNS server.
+If the message responded from Root does NOT start with '0x01, which means Recursive query, the local DNS server responds the message to client.
+
 
 Name: DOU Daihui
 ID: 5514178
@@ -12,6 +22,8 @@ import sys
 import os
 from _thread import *
 
+#-------------------------------------------------------
+# The IP and Port of Root DNS server is hard-coded here!
 ROOT_IP = '127.0.0.1'
 ROOT_PORT = 5353
 
@@ -21,10 +33,12 @@ def readDNSMap(filename):
         for line in f:
             line = line.strip()
             domain = line.split(" ")[0].lower().replace("www.", "")
-
             ip = line.split(" ")[1]
             DNS_map[domain] = ip
+
     return  DNS_map
+
+
 
 def writetoLog(filename, line):
     print("Write to: "+filename)
